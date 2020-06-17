@@ -6,20 +6,30 @@ import org.junit.Test
 /**
  *  @项目名：  KotlinDemo
  *  @包名：    com.wcl.kotlindemo.test3
- *  @文件名:   Test39
+ *  @文件名:   Test38
  *  @创建者:   kilin
- *  @创建时间:  2020/6/11 21:51
- *  @描述：    TODO
+ *  @创建时间:  2020/6/11 21:41
+ *  @描述：    kotlin中一个文件运行存在多个类
  */
-class Test39 {
+object StringUtil {
+    fun letterCount(str: String): Int {
+        var count = 0
+        for (char in str) {
+            if (char.isLetter()) {
+                count++
+            }
+        }
+        return count
+    }
+}
+
+class Test {
 
     @Test
     fun main() {
-        val money1 = Money()
-        money1.value = 8
-        val money2 = Money()
-        money2.value = 5
-        val money3 = money1 + money2
-        println("money3.value: ${money3.value}")
+        val str = "abc123!#@"
+        val count = StringUtil.letterCount(str)
+        println("count: $count")
+
     }
 }
