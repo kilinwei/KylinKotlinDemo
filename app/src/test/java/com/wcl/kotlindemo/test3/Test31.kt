@@ -1,5 +1,7 @@
 package com.wcl.kotlindemo.test3
 
+import org.junit.Test
+
 
 /**
  *  @项目名：  KotlinDemo
