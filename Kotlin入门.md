@@ -99,6 +99,8 @@ fun main() {
 }
 ```
 
+PS: 每一行代码的结束可以省略掉分号`;`，这一点是和`Java`不同的地方。当然，第一次写可能会有一点不习惯。
+
 * **Kotlin 完全抛弃了 Java 中的基本数据类型，全部使用了对象数据类型。在 Java 中 int 是整型变量的关键字，而在 Kotlin 中 Int 变成了一个类，它拥有自己的方法和继承结构**。
 
 | **Java**基本数据类型 | **Kotlin**对象数据类型 | **数据类型说明** |
@@ -131,7 +133,95 @@ val name = "张三"
 "hello, $name. nice to meet you!"
 ```
 
-- 每一行代码的结束可以省略掉分号`;`，这一点是和`Java`不同的地方。当然，第一次写可能会有一点不习惯。
+- **自定义get() 和 set()**
+
+  这里讲解属性的自定义`getter()`与`setter()`。由上面可知，使用`val`修饰的属性，是不能有`setter()`的。而使用`var`修饰的属性可以同时拥有自定义的`getter()`与`setter()`。通过两个实例来说明:
+
+  例1：用`val`修饰的属性自定义情况
+
+  ```Kotlin
+  class Mime{
+      // size属性
+      private val size = 0    
+      
+      // 即isEmpty这个属性，是判断该类的size属性是否等于0
+      val isEmpty : Boolean
+          get() = this.size == 0
+  
+      // 另一个例子
+      val num = 2
+          get() = if (field > 5) 10 else 0
+  }
+  
+  // 测试
+  fun main(args: Array<String>) {
+      val mime = Mime()
+      println("isEmpty = ${mime.isEmpty}")
+      println("num = ${mime.num}")
+  }
+  ```
+
+  输出结果为：
+
+  ```
+  isEmpty = true
+  num = 0
+  ```
+
+  例2：用`var`修饰的属性自定义情况
+
+  ```Kotlin
+  class Mime{
+  
+      var str1 = "test"
+          get() = field   // 这句可以省略，kotlin默认实现的方式
+          set(value){
+              field = if (value.isNotEmpty()) value else "null"
+          }
+  
+      var str2 = ""
+          get() = "随意怎么修改都不会改变"
+          set(value){
+              field = if (value.isNotEmpty()) value else "null"
+          }
+  }
+  
+  // 测试
+  fun main(args: Array<String>) {
+      val mime = Mime()
+      
+      println("str = ${mime.str1}")
+      mime.str1 = ""
+      println("str = ${mime.str1}")
+      mime.str1 = "kotlin"
+      println("str = ${mime.str1}")
+  
+      println("str2 = ${mime.str2}")
+      mime.str2 = ""
+      println("str2 = ${mime.str2}")
+      mime.str2 = "kotlin"
+      println("str2 = ${mime.str2}")
+  } 
+  ```
+
+  输出结果为：
+
+  ```
+  str = test
+  str = null
+  str = kotlin
+  str2 = 随意怎么修改都不会改变
+  str2 = 随意怎么修改都不会改变
+  str2 = 随意怎么修改都不会改变
+  ```
+
+  经过上面的实例，我总结出了以下几点：
+
+  > 1. 使用了`val`修饰的属性，不能有`setter()`.
+  > 2. 不管是`val`还是`var`修饰的属性，只要存在`getter()`,其值再也不会变化
+  > 3. 使用`var`修饰的属性，可以省略掉`getter()`,不然`setter()`毫无意义。当然`get() = field`除外。而`get() = field`是`Koltin`默认的实现，是可以省略这句代码的。
+
+  故而，在实际的项目开发中，这个自定义的`getter`与`setter`的意义不是太大。
 
 ###  2.变量的延迟初始化
 
@@ -614,7 +704,7 @@ fun ClassName.methodName(param1: Int,param2: Int): Int{
 object StringUtil {
     fun letterCount(str: String): Int {
         var count = 0
-        for (char in str) {
+        for (char in str) {	//遍历字符串中的字符
             if (char.isLetter()) {
                 count++
             }
@@ -682,6 +772,39 @@ val obj3 = obj1 + obj2
 ```
 
 这是Kotlin给我们提供的语法糖,在编译的时候,会被转换为 obj1.plus(obj2) 的调用方式,所以,在 java 代码中调用的时候,需要这么调用: `obj1.plus(obj2);`
+
+比如以下例子:
+
+```Kotlin
+class Money() {
+    var value = 0
+
+    operator fun plus(money: Money): Money {
+        val sum = value + money.value
+        val newMoney = Money()
+        newMoney.value = sum
+        return newMoney
+    }
+
+    operator fun plus(i: Int): Money {
+        val sum = value + i
+        val newMoney = Money()
+        newMoney.value = sum
+        return newMoney
+    }
+}
+```
+
+调用如下:
+
+```Kotlin
+val money1 = Money()
+money1.value = 8
+val money2 = Money()
+money2.value = 5
+val money3 = money1 + money2
+println("money3.value = ${money3.value}")  //打印结果: money3.value = 13
+```
 
 不光是 plus ( + ),包括 minus ( - ) ,times ( * ) ,div( / ) 等,都可以重载
 

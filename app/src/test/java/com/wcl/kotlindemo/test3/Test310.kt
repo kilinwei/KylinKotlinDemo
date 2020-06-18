@@ -20,6 +20,6 @@ class Test310 {
         val money2 = Money()
         money2.value = 5
         val money3 = money1 + money2
-        println("money3.value: ${money3.value}")
+        println("money3.value = ${money3.value}")
     }
 }

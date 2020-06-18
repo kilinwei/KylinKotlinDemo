@@ -72,7 +72,7 @@ class Test36 {
     }
 
     @Test
-    fun also(){
+    fun also() {
         val student = Student(name = "李四")
         val s = student.also {
             it.name = "王五"
