@@ -113,6 +113,7 @@ fun main() {
 | **byte**             | Byte                   | 字节型           |
 
 * **字符串内嵌表达式(字符串模版)**
+* **字符串内嵌表达式(字符串模版)**
 
 在Kotlin中，我们可以直接将表达式写在字符串里面，即使是构建非常复杂的字符串，也会变得很简单。
 
@@ -818,7 +819,66 @@ fun checkNumber(num: Number) {
 }
 ~~~
 
+#### 3.与逗号结合使用
 
+相当于switch语句中的不使用break跳转语句
+
+例：
+
+```Kotlin
+when(1){
+     // 即x = 1,2,3时都输出1。
+    1 , 2 , 3 -> {
+        println("1")
+    }
+    5 -> {
+        println("5")
+    }
+    else -> {
+        println("0")
+    }
+}
+```
+
+#### 4.条件可以使用任意表达式
+
+条件可以使用任意表达式，不仅局限于常量,相当于`if`表达式的用法:
+
+```Kotlin
+var num:Int = 5
+when(num > 5){
+    true -> {
+        println("num > 5")
+    }
+    false ->{
+        println("num < 5")
+    }
+    else -> {
+        println("num = 5")
+    }
+}
+```
+
+#### 5.检查值是否存在于集合或数组中
+
+- 操作符：
+  1. `（in）` 在
+  2. `(!in)` 不在
+- 限定:只适用于数值类型
+
+```Kotlin
+var arrayList = arrayOf(1,2,3,4,5)
+when(1){
+    in arrayList.toIntArray() -> {
+        println("1 存在于 arrayList数组中")
+    }
+    in 0 .. 10 -> println("1 属于于 0~10 中")
+    !in 5 .. 15 -> println("1 不属于 5~15 中")
+    else -> {
+        println("都没匹配上")
+    }
+}
+```
 
 ### 3.for-in循环语句
 
@@ -1074,9 +1134,116 @@ class Student(val sno: String = "a123", val grade: Int = 1, name: String, age: I
 
 
 
-###  
+## 6. 数组型（Array）
 
-##  6.集合
+ - `Kotlin`中数组由`Array<T>`表示
+ - 创建数组的3个函数
+   1. `arrayOf()`
+   2. `arrayOfNulls()`
+   3. 工厂函数（`Array()`）
+
+###  1.arrayOf()
+
+> 创建一个数组，参数是一个可变参数的泛型对象
+
+例：
+
+```
+var arr1 = arrayOf(1, 2, 3, 4, 5) //等价于java [1,2,3,4,5]
+println(arr1.joinToString())
+
+var arr2 = arrayOf("0", "2", "3", 'a', 32.3f)
+println(arr2.joinToString())
+```
+
+输出结果为：
+
+```
+1, 2, 3, 4, 5
+0, 2, 3, a, 32.3
+```
+
+###  2.arrayOfNulls()
+
+> 用于创建一个指定数据类型且可以为空元素的给定元素个数的数组
+
+例：
+
+```Kotlin
+var arr3 = arrayOfNulls<Int>(3)
+
+//如若不予数组赋值则arr3[0]、arr3[1]、arr3[2]皆为null
+println(arr3.joinToString())
+
+//为数组arr3赋值
+arr3[0] = 10
+arr3[1] = 20
+arr3[2] = 30
+println(arr3.joinToString())
+```
+
+输出结果为：
+
+```
+null, null, null
+10, 20, 30
+```
+
+###  3.工厂函数
+
+ - 使用一个工厂函数`Array()`，它使用数组大小和返回给定其索引的每个数组元素的初始值的函数。
+ - `Array()` => 第一个参数表示数组元素的个数，第二个参数则为使用其元素下标组成的表达式
+
+例：
+
+```
+var arr4 = Array(5,{index -> (index * 2).toString() })
+println(arr4.joinToString())
+```
+
+输出结果为:
+
+```
+0, 2, 4, 6, 8
+```
+
+### 4.原始类型数组
+
+ - `Kotlin`还有专门的类来表示原始类型的数组，没有装箱开销，它们分别是：
+   1. `ByteArray` => 表示字节型数组
+   2. `ShortArray` => 表示短整型数组
+   3. `IntArray` => 表示整型数组
+   4. `LongArray` => 表示长整型数组
+   5. `BooleanArray` => 表示布尔型数组
+   6. `CharArray` => 表示字符型数组
+   7. `FloatArray` => 表示浮点型数组
+   8. `DoubleArray` => 表示双精度浮点型数组
+ - PS: **`Kotlin`中不支持字符串类型这种原始类型数组，可以看源码`Arrays.kt`这个类中并没有字符串数组的声明。而源码中`StringArray.kt`这个类并不是声明字符串型数组的。**
+
+下面的例子只演示了几种，其他的类似。
+例：
+
+```Kotlin
+var intArr: IntArray = intArrayOf(1,2,3,4,5)
+println(intArr.joinToString())
+
+var charArr: CharArray = charArrayOf('a','1','b','c','3','d')
+println(charArr.joinToString())
+
+
+var longArr: LongArray = longArrayOf(12L,1254L,123L,111L)
+println(longArr.joinToString())
+```
+
+输入结果为:
+
+```
+1, 2, 3, 4, 5
+a, 1, b, c, 3, d
+12, 1254, 123, 111
+```
+
+##  7.集合
 
 ###  1.集合的类型
 
@@ -1164,7 +1331,7 @@ for (i in 0 until 10) {
  println(map["hello"])
 ~~~
 
-##  7.空指针检查
+##  8.空指针检查
 
 ###  1.什么是空指针
 
@@ -1233,7 +1400,7 @@ a?.doSomething()
 
 *  **2. `?:`操作符**
 
-?: 操作符表示如果左边表达式的结果不为空就返回左边表达式的结果，否则就返回右边表达式的结果。比如
+`?:` 操作符表示如果左边表达式的结果不为空就返回左边表达式的结果，否则就返回右边表达式的结果。比如
 
 ```kotlin
 val c = if (a ! = null) {
@@ -1243,7 +1410,7 @@ val c = if (a ! = null) {
 }
 ```
 
-这段代码的逻辑使用`?:`操作符就可以简化成：
+这段代码的逻辑使用 `?:` 操作符就可以简化成：
 
 ```kotlin
 val c = a ?: b
@@ -1273,9 +1440,36 @@ fun doStudy(study: Study?) {
 }
 ```
 
+* **5.as?操作符**
 
+其实这里是指`as`操作符，表示类型转换，如果不能正常转换的情况下使用`as?`操作符。当使用`as`操作符的使用不能正常的转换的情况下会抛出`类型转换（ClassCastException）异常`，而使用`as?`操作符则会返回`null`,但是不会抛出异常
 
-##  8.Lambda
+**1. 使用 as**
+
+例：
+
+```Kotlin
+// 会抛出ClassCastException异常
+val num1 : Int? = "Koltin" as Int
+println("nun1 = $num1")
+```
+
+**2. 使用as?**
+
+例：
+
+```Kotlin
+val num2 : Int? = "Koltin" as? Int
+println("nun2 = $num2)
+```
+
+输出结果为：
+
+```
+num2 = null
+```
+
+##  9.Lambda
 
 ###  1.Lambda的定义
 
@@ -1339,7 +1533,7 @@ button.setOnClickListener {
 
 ```
 
-##  9.高阶函数
+##  10.高阶函数
 
 ###  1.高阶函数的定义
 
