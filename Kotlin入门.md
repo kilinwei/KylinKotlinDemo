@@ -1,5 +1,9 @@
 # Kotlin
 
+[TOC]
+
+
+
 ## 1.基本介绍
 
 #### 1.Kotlin的发展历程
@@ -37,7 +41,7 @@ Java 虚拟机不会关心 class 文件是从 Java 编译来的，还是从 Kotl
 
 1. 第一种方法是使用 IntelliJ IDEA。
 2. 第二种方法是在线运行 Kotlin 代码。JetBrains 专门提供了一个可以在线运行 Kotlin 代码的网站，地址是：https://play.kotlinlang.org。
-3. 第三种方法是使用 Android Studio或者 IDE。在任意 Android 工程中创建一个 Kotlin 文件，并编写一个`main()` 函数，即可运行`main()`函数中的Kotlin代码。
+3. 第三种方法是使用 Android Studio。在任意 Android 工程中创建一个 Kotlin 文件，并编写一个`main()` 函数，即可运行`main()`函数中的Kotlin代码。
 
 如果是旧项目,可以在任意包下,`new` 一个 `Kotlin class`,Android studio 就会提示 `Kotlin not configured`,按照提示操作即可,或者按照以下步骤手动添加
 
@@ -114,7 +118,6 @@ PS: 每一行代码的结束可以省略掉分号`;`，这一点是和`Java`不�
 | **char**             | Char                   | 字符型           |
 | **byte**             | Byte                   | 字节型           |
 
-* **字符串内嵌表达式(字符串模版)**
 * **字符串内嵌表达式(字符串模版)**
 
 在Kotlin中，我们可以直接将表达式写在字符串里面，即使是构建非常复杂的字符串，也会变得很简单。
@@ -215,7 +218,7 @@ val name = "张三"
   str2 = 随意怎么修改都不会改变
   ```
 
-  经过上面的实例，我总结出了以下几点：
+  经过上面的实例，总结出了以下几点：
 
   > 1. 使用了`val`修饰的属性，不能有`setter()`.
   > 2. 不管是`val`还是`var`修饰的属性，只要存在`getter()`,其值再也不会变化
@@ -646,7 +649,7 @@ class Util {
  Util.doAction()
 ```
 
-这个时候如果你尝试在 `Java`代码中调用 `doAction()`,你会发现`doAction()`不存在,因为它并不是真正的静态方法,而是` companion object`关键字在 `Util` 类的内部创建了一个伴生类,`doAction2`调用的是伴生类中的`doAction`方法,只不过 `kotlin`保证 `Util`中始终只会保证存在一个伴生类对象.
+这个时候如果你尝试在 `Java`代码中调用 `doAction()`,你会发现`doAction()`不存在,因为它并不是真正的静态方法,而是` companion object`关键字在 `Util` 类的内部创建了一个伴生类,`doAction`调用的是伴生类中的`doAction`方法,只不过 `kotlin`保证 `Util`中始终只会保证存在一个伴生类对象.
 
 如果我们真的需要在 `Java` 代码中调用 `doAction()`,那么我们可以在`companion object`中的方法上添加`@JvmStatic` 注解,那么 `Kotlin` 编译器就会将这些方法编译成为真正的静态方法,在 Java代码中就可以调用,如下图:
 
@@ -721,7 +724,7 @@ val str = "abc123!#@"
 val count = StringUtil.letterCount(str)
 ```
 
-但是我们有了扩展函数的后,可以使用面向对象的思维来实现这个功能,比如将letterCount() 函数添加到 String 类中
+但是我们有了扩展函数的后,可以使用面向对象的思维来实现这个功能,比如将 `letterCount()` 函数添加到 String 类中
 
 由于我们希望向 `String` 添加一个扩展函数,因此需要创建一个 `String.kt`的文件,文件名没有固定要求格式,但是为了便于查找,建议向哪个类添加扩展函数,就定义一个同名的 Kotlin 文件;并且,建议定义为顶层方法,这样可以让扩展函数拥有全局的访问阈,现在我们向`String.kt` 添加如下代码:
 
